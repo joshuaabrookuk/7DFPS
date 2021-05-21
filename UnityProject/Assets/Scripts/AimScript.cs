@@ -26,10 +26,10 @@ public class CharacterMotorMovement {
 	public float maxForwardSpeed = 10.0f;
 	public float maxSidewaysSpeed = 10.0f;
 	public float maxBackwardsSpeed = 10.0f;
-	
+
 	// Curve for multiplying speed based on slope (negative = downwards)
 	public AnimationCurve slopeSpeedMultiplier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
-	
+
 	// How fast does the character change speeds?  Higher is faster.
 	public float maxGroundAcceleration = 30.0f;
 	public float maxAirAcceleration = 20.0f;
@@ -37,25 +37,25 @@ public class CharacterMotorMovement {
 	// The gravity for the character
 	public float gravity = 10.0f;
 	public float maxFallSpeed = 20.0f;
-	
+
 	// For the next variables, @System.NonSerialized tells Unity to not serialize the variable or show it in the inspector view.
 	// Very handy for organization!
 
 	// The last collision flags returned from controller.Move
 	[System.NonSerialized]
-	public CollisionFlags collisionFlags; 
+	public CollisionFlags collisionFlags;
 
 	// We will keep track of the character's current velocity,
 	[System.NonSerialized]
 	public Vector3 velocity;
-	
+
 	// This keeps track of our current velocity while we're not grounded
 	[System.NonSerialized]
 	public Vector3 frameVelocity = Vector3.zero;
-	
+
 	[System.NonSerialized]
 	public Vector3 hitPoint = Vector3.zero;
-	
+
 	[System.NonSerialized]
 	public Vector3 lastHitPoint = new Vector3(Mathf.Infinity, 0.0f, 0.0f);
 }
@@ -75,18 +75,18 @@ public class CharacterMotorJumping {
 
 	// How high do we jump when pressing jump and letting go immediately
 	public float baseHeight = 1.0f;
-	
+
 	// We add extraHeight units (meters) on top when holding the button down longer while jumping
 	public float extraHeight = 4.1f;
-	
+
 	// How much does the character jump out perpendicular to the surface on walkable surfaces?
 	// 0 means a fully vertical jump and 1 means fully perpendicular.
 	public float perpAmount = 0.0f;
-	
+
 	// How much does the character jump out perpendicular to the surface on too steep surfaces?
 	// 0 means a fully vertical jump and 1 means fully perpendicular.
 	public float steepPerpAmount = 0.5f;
-	
+
 	// For the next variables, @System.NonSerialized tells Unity to not serialize the variable or show it in the inspector view.
 	// Very handy for organization!
 
@@ -94,17 +94,17 @@ public class CharacterMotorJumping {
 	// To see if we are just in the air (initiated by jumping OR falling) see the grounded variable.
 	[System.NonSerialized]
 	public bool jumping = false;
-	
+
 	[System.NonSerialized]
 	public bool holdingJumpButton = false;
 
 	// the time we jumped at (Used to determine for how long to apply extra jump power after jumping.)
 	[System.NonSerialized]
 	public float lastStartTime = 0.0f;
-	
+
 	[System.NonSerialized]
 	public float lastButtonDownTime = -100.0f;
-	
+
 	[System.NonSerialized]
 	public Vector3 jumpDir = Vector3.up;
 }
@@ -112,33 +112,33 @@ public class CharacterMotorJumping {
 [System.Serializable]
 public class CharacterMotorMovingPlatform {
 	public bool enabled = true;
-	
+
 	public MovementTransferOnJump movementTransfer = MovementTransferOnJump.PermaTransfer;
-	
+
 	[System.NonSerialized]
 	public Transform hitPlatform;
-	
+
 	[System.NonSerialized]
 	public Transform activePlatform;
-	
+
 	[System.NonSerialized]
 	public Vector3 activeLocalPoint;
-	
+
 	[System.NonSerialized]
 	public Vector3 activeGlobalPoint;
-	
+
 	[System.NonSerialized]
 	public Quaternion activeLocalRotation;
-	
+
 	[System.NonSerialized]
 	public Quaternion activeGlobalRotation;
-	
+
 	[System.NonSerialized]
 	public Matrix4x4 lastMatrix;
-	
+
 	[System.NonSerialized]
 	public Vector3 platformVelocity;
-	
+
 	[System.NonSerialized]
 	public bool newPlatform;
 }
@@ -147,14 +147,14 @@ public class CharacterMotorMovingPlatform {
 public class CharacterMotorSliding {
 	// Does the character slide on too steep surfaces?
 	public bool enabled = true;
-	
+
 	// How fast does the character slide on steep surfaces?
 	public float slidingSpeed = 15.0f;
-	
+
 	// How much can the player control the sliding direction?
 	// If the value is 0.5 the player can slide sideways with half the speed of the downwards sliding speed.
 	public float sidewaysControl = 1.0f;
-	
+
 	// How much can the player influence the sliding speed?
 	// If the value is 0.5 the player can speed the sliding up to 150% or slow it down to 50%.
 	public float speedControl = 0.4f;
@@ -163,30 +163,30 @@ public class CharacterMotorSliding {
 [RequireComponent(typeof(CharacterController))]
 
 public class AimScript:MonoBehaviour{
-    
+
     // Networking
     public bool main_client_control = true;
-    
+
     // Assets and prefabs
     GameObject magazine_obj;
     GameObject gun_obj;
     GameObject casing_with_bullet;
     public Texture texture_death_screen;
-    
+
     public List<AudioClip> sound_bullet_grab;
     public List<AudioClip> sound_body_fall;
     public List<AudioClip> sound_electrocute;
-    
+
     AudioSource audiosource_tape_background;
     AudioSource audiosource_audio_content;
-    
+
     // Links to other objects in scene
     [HideInInspector]
     public GameObject main_camera;
     CharacterController character_controller;
     GUISkinHolder holder;
     WeaponHolder weapon_holder;
-    
+
     // Help
     bool show_help = false;
     bool show_advanced_help = false;
@@ -196,13 +196,13 @@ public class AimScript:MonoBehaviour{
     GUIStyle help_text_style = null;
     float help_text_offset = 0f;
     Color help_normal_color = new Color(.7f, .7f, .7f);
-    
+
     // Aim down sights info
     bool aim_toggle = false;
     const float kAimSpringStrength = 100.0f;
 	const float kAimSpringDamping = 0.00001f;
     Spring aim_spring = new Spring(0.0f,0.0f,kAimSpringStrength,kAimSpringDamping);
-    
+
     // Flashlight positioning
     GameObject held_flashlight = null;
     Vector3 flashlight_aim_pos;
@@ -211,7 +211,7 @@ public class AimScript:MonoBehaviour{
     Spring flash_ground_pose_spring = new Spring(0.0f,0.0f,kAimSpringStrength, kAimSpringDamping);
     Vector3 flash_ground_pos;
     Quaternion flash_ground_rot;
-    
+
     // Allows gun to move independently of camera while aiming, within a small box
     float rotation_x_leeway = 0.0f;
     float rotation_y_min_leeway = 0.0f;
@@ -219,7 +219,7 @@ public class AimScript:MonoBehaviour{
     float kRotationXLeeway = 5.0f;
     float kRotationYMinLeeway = 20.0f;
     float kRotationYMaxLeeway = 10.0f;
-    
+
     // Camera and gun rotations
     float rotation_x = 0.0f;
     float rotation_y = 0.0f;
@@ -229,7 +229,7 @@ public class AimScript:MonoBehaviour{
     float sensitivity_y = 2.0f;
     float min_angle_y = -89.0f;
     float max_angle_y = 89.0f;
-    
+
     // Recoil
 	const float kRecoilSpringStrength = 800.0f;
     const float kRecoilSpringDamping = 0.000001f;
@@ -240,10 +240,10 @@ public class AimScript:MonoBehaviour{
     const int kMaxHeadRecoil = 10;
     float[] head_recoil_delay = new float[kMaxHeadRecoil];
     int next_head_recoil_delay = 0;
-    
-    // Actual instance of gun prefab			
+
+    // Actual instance of gun prefab
     GameObject gun_instance;
-    
+
     // Springs for different gun poses (how it's held)
     Spring slide_pose_spring = new Spring(0.0f,0.0f,kAimSpringStrength, kAimSpringDamping);
     Spring reload_pose_spring = new Spring(0.0f,0.0f,kAimSpringStrength, kAimSpringDamping);
@@ -255,7 +255,7 @@ public class AimScript:MonoBehaviour{
     float kGunDistance = 0.3f;
 
     GunTilt gun_tilt = GunTilt.CENTER;
-    
+
     // Magazine posing
     Spring hold_pose_spring = new Spring(0.0f,0.0f,kAimSpringStrength, kAimSpringDamping);
     Spring mag_ground_pose_spring = new Spring(0.0f,0.0f,kAimSpringStrength, kAimSpringDamping);
@@ -267,14 +267,14 @@ public class AimScript:MonoBehaviour{
 
     HandMagStage mag_stage = HandMagStage.EMPTY;
     bool queue_drop = false; // In case player pressed 'drop' again while mag is ejecting
-    
+
     // Bullets
     List<GameObject> items_being_picked_up = new List<GameObject>();
     public List<GameObject> loose_bullets;
     List<Spring> loose_bullet_spring;
     Spring show_bullet_spring = new Spring(0.0f,0.0f,kAimSpringStrength, kAimSpringDamping);
     float picked_up_bullet_delay = 0.0f;
-    
+
     // Death effects
     float head_fall = 0.0f;
     float head_fall_vel = 0.0f;
@@ -286,7 +286,7 @@ public class AimScript:MonoBehaviour{
     float win_fade = 0.0f;
     float dead_volume_fade = 0.0f;
     bool dead_body_fell = false;
-    
+
     // Tape player
     float start_tape_delay = 0.0f;
     float stop_tape_delay = 0.0f;
@@ -296,11 +296,11 @@ public class AimScript:MonoBehaviour{
     bool tape_in_progress = false;
     int unplayed_tapes = 0;
     int tape_count = 11;
-    
+
     float level_reset_hold = 0.0f;
     float slomo_warning_duration = 0f;
     float start_info_duration = 5f;
-    
+
     // Inventory slots
     int target_weapon_slot = -2;
 
@@ -315,20 +315,20 @@ public class AimScript:MonoBehaviour{
 
     //Level Creator
     LevelCreatorScript level_creator = null;
-    
+
     public bool IsAiming() {
     	return (gun_instance != null && aim_spring.target_state == 1.0f);
     }
-    
+
     public bool IsDead() {
     	return dead;
     }
-    
+
     public void StepRecoil(float amount) {
     	x_recoil_spring.vel += UnityEngine.Random.Range(100,400) * amount;
     	y_recoil_spring.vel += UnityEngine.Random.Range(-200,200) * amount;
     }
-    
+
     public void WasShot(){
     	head_recoil_spring_x.vel += (float)UnityEngine.Random.Range(-400,400);
     	head_recoil_spring_y.vel += (float)UnityEngine.Random.Range(-400,400);
@@ -346,7 +346,7 @@ public class AimScript:MonoBehaviour{
     		}
     	}
     }
-    
+
     public void FallDeath(Vector3 vel) {
     	if(!Cheats.god_mode && !won){
     		SetDead(true);
@@ -356,12 +356,12 @@ public class AimScript:MonoBehaviour{
     		head_recoil_spring_y.vel += (float)UnityEngine.Random.Range(-400,400);
     	}
     }
-    
+
     public void InstaKill() {
     	SetDead(true);
     	dead_fade = 1.0f;
     }
-    
+
     public void Shock() {
     	if(!Cheats.god_mode && !won){
     		if(!dead){
@@ -372,7 +372,7 @@ public class AimScript:MonoBehaviour{
     	head_recoil_spring_x.vel += (float)UnityEngine.Random.Range(-400,400);
     	head_recoil_spring_y.vel += (float)UnityEngine.Random.Range(-400,400);
     }
-    
+
     public void SetDead(bool new_dead) {
     	if(new_dead == dead){
     		return;
@@ -396,19 +396,19 @@ public class AimScript:MonoBehaviour{
     		dead_body_fell = false;
     	}
     }
-    
+
     public void PlaySoundFromGroup(List<AudioClip> group,float volume){
     	int which_shot = UnityEngine.Random.Range(0,group.Count);
     	GetComponent<AudioSource>().PlayOneShot(group[which_shot], volume * Preferences.sound_volume);
     }
-    
+
     public void AddLooseBullet(bool spring) {
         GameObject round = Instantiate(casing_with_bullet);
 
         if(level_creator != null) {
             round.transform.parent = level_creator.GetPlayerInventoryTransform();
         }
-           
+
     	loose_bullets.Add(round);
     	round.GetComponentInChildren<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
     	Spring new_spring = new Spring(0.3f,0.3f,kAimSpringStrength,kAimSpringDamping);
@@ -418,8 +418,8 @@ public class AimScript:MonoBehaviour{
     		picked_up_bullet_delay = 2.0f;
     	}
     }
-    
-    public void Start() { 
+
+    public void Start() {
         GameObject level_object = GameObject.Find("LevelObject");
 
         if(level_object != null) {
@@ -436,7 +436,7 @@ public class AimScript:MonoBehaviour{
     	magazine_obj = weapon_holder.mag_object;
     	gun_obj = weapon_holder.gun_object;
     	casing_with_bullet = weapon_holder.bullet_object;
-    
+
     	if(UnityEngine.Random.Range(0f, 1f) < 0.35f) {
     		held_flashlight = (GameObject)Instantiate(holder.flashlight_object);
     		Destroy(held_flashlight.GetComponent<Rigidbody>());
@@ -446,7 +446,7 @@ public class AimScript:MonoBehaviour{
             }
     		holder.has_flashlight = true;
     	}
-    	
+
     	rotation_x = transform.rotation.eulerAngles.y;
     	view_rotation_x = transform.rotation.eulerAngles.y;
     	gun_instance = (GameObject)Instantiate(gun_obj);
@@ -470,7 +470,7 @@ public class AimScript:MonoBehaviour{
     	for(int i=0; i<10; ++i){
     		weapon_slots[i] = new WeaponSlot();
     	}
-    	
+
     	inventory_input_actions = new UnityEngine.InputSystem.InputAction[] {
     		RInput.player.Inventory.Inventory1,
     		RInput.player.Inventory.Inventory2,
@@ -483,7 +483,7 @@ public class AimScript:MonoBehaviour{
     		RInput.player.Inventory.Inventory9,
     		RInput.player.Inventory.Inventory10,
     	};
-    	
+
     	int num_start_bullets = UnityEngine.Random.Range(0,10);
     	if(magazine_obj != null) {
     		int num_start_mags = UnityEngine.Random.Range(0,3);
@@ -507,7 +507,7 @@ public class AimScript:MonoBehaviour{
     	audiosource_tape_background.clip = holder.sound_tape_background;
     	audiosource_audio_content = gameObject.AddComponent<AudioSource>();
     	audiosource_audio_content.loop = false;
-    	
+
     	List<AudioClip> temp_total_tapes = new List<AudioClip>(holder.sound_tape_content);
 
         if(PlayerPrefs.GetInt("limit_tape_count",1) == 0) {
@@ -518,38 +518,38 @@ public class AimScript:MonoBehaviour{
     		if(temp_total_tapes.Count <= 0) {
     			temp_total_tapes.AddRange(holder.sound_tape_content); // We have run out of tapes, but we need more => Allow for duplicates
     		}
-    
+
     		int rand_tape_id = UnityEngine.Random.Range(0, temp_total_tapes.Count);
     		tapes_remaining.Add(temp_total_tapes[rand_tape_id]);
     		temp_total_tapes.RemoveAt(rand_tape_id);
     	}
-    
+
     	total_tapes = new List<AudioClip>(tapes_remaining);
     }
-    
+
     public float GunDist() {
     	return kGunDistance * (0.5f + PlayerPrefs.GetFloat("gun_distance", 1.0f)*0.5f);
     }
-    
+
     public Vector3 AimPos() {
     	Vector3 aim_dir = AimDir();
     	return main_camera.transform.position + aim_dir*GunDist();
     }
-    
+
     public Vector3 AimDir() {
     	Quaternion aim_rot = new Quaternion();
         aim_rot = Quaternion.Euler(-rotation_y, rotation_x, 0.0f);
     	return aim_rot * new Vector3(0.0f,0.0f,1.0f);
     }
-    
+
     public GunScript GetGunScript() {
     	return gun_instance.GetComponent<GunScript>();
     }
-    
+
     public Vector3 mix(Vector3 a,Vector3 b,float val){
     	return a + (b-a) * val;
     }
-    
+
     public Quaternion mix(Quaternion a,Quaternion b,float val){
     	float angle = 0.0f;
     	Vector3 axis = new Vector3();
@@ -565,7 +565,7 @@ public class AimScript:MonoBehaviour{
     	}
     	return a * Quaternion.AngleAxis(angle * -val, axis);
     }
-    
+
     public bool ShouldPickUpNearby() {
     	//object nearest_mag = null;
     	//float nearest_mag_dist = 0.0f;
@@ -574,14 +574,14 @@ public class AimScript:MonoBehaviour{
     		if((magazine_obj != null) && collider.gameObject.name == magazine_obj.name+"(Clone)" && (collider.gameObject.GetComponent<Rigidbody>() != null)){
     			if(mag_stage == HandMagStage.EMPTY){
     				return true;
-    			}	
+    			}
     		} else if((collider.gameObject.name == casing_with_bullet.name || collider.gameObject.name == casing_with_bullet.name+"(Clone)") && (collider.gameObject.GetComponent<Rigidbody>() != null)){
     			return true;
     		}
     	}
     	return false;
     }
-    
+
     // Pick up nearby objects
     public void HandleGetControl(){
     	// Only pick up one magazine at a time
@@ -593,19 +593,19 @@ public class AimScript:MonoBehaviour{
     		if((magazine_obj != null) && collider.gameObject.name == magazine_obj.name+"(Clone)" && (collider.gameObject.GetComponent<Rigidbody>() != null)){
     			// Magazine
     			float dist = Vector3.Distance(collider.transform.position, main_camera.transform.position);
-    			if(nearest_mag == null || dist < nearest_mag_dist){	
+    			if(nearest_mag == null || dist < nearest_mag_dist){
     				nearest_mag_dist = dist;
     				nearest_mag = collider.gameObject;
-    			}					
+    			}
     		} else if((collider.gameObject.name == casing_with_bullet.name || collider.gameObject.name == casing_with_bullet.name+"(Clone)") && (collider.gameObject.GetComponent<Rigidbody>() != null)){
     			// Unfired bullet
-    			items_being_picked_up.Add(collider.gameObject);			
+    			items_being_picked_up.Add(collider.gameObject);
     			collider.gameObject.GetComponent<Rigidbody>().useGravity = false;
     			collider.gameObject.GetComponent<Rigidbody>().WakeUp();
     			collider.enabled = false;
     		} else if(collider.gameObject.name == "cassette_tape(Clone)" && (collider.gameObject.GetComponent<Rigidbody>() != null)){
     			// Cassette tape
-    			items_being_picked_up.Add(collider.gameObject);			
+    			items_being_picked_up.Add(collider.gameObject);
     			collider.gameObject.GetComponent<Rigidbody>().useGravity = false;
     			collider.gameObject.GetComponent<Rigidbody>().WakeUp();
     			collider.enabled = false;
@@ -630,7 +630,7 @@ public class AimScript:MonoBehaviour{
     	if((nearest_mag != null) && mag_stage == HandMagStage.EMPTY){
     		magazine_instance_in_hand = nearest_mag;
     		Destroy(magazine_instance_in_hand.GetComponent<Rigidbody>());
-            if(level_creator != null) { 
+            if(level_creator != null) {
                 magazine_instance_in_hand.transform.parent = level_creator.GetPlayerInventoryTransform(); //Move item out of tile into player inventory
             } else {
                 magazine_instance_in_hand.transform.parent = null; //Move item out of tile
@@ -645,8 +645,8 @@ public class AimScript:MonoBehaviour{
     		mag_stage = HandMagStage.HOLD;
     	}
     }
-    
-    public bool HandleInventoryControls() {	
+
+    public bool HandleInventoryControls() {
     	if(RInput.GetButtonDown(RInput.player.Inventory.Holster)){
     		target_weapon_slot = -1;
     	}
@@ -680,7 +680,7 @@ public class AimScript:MonoBehaviour{
     	if(RInput.GetButtonDown(RInput.player.Inventory.Inventory10)){
     		target_weapon_slot = 9;
     	}
-    	
+
     	bool mag_ejecting = false;
 		GunScript gunScript = null;
 		if(gun_instance)
@@ -688,9 +688,9 @@ public class AimScript:MonoBehaviour{
 
     	if(gun_instance && (gunScript.IsMagCurrentlyEjecting() || gunScript.IsReadyToRemoveMagazine()))
     		mag_ejecting = true;
-    
+
     	bool insert_mag_with_number_key = false;
-    	
+
     	if(target_weapon_slot != -2 && !mag_ejecting && (mag_stage == HandMagStage.EMPTY || mag_stage == HandMagStage.HOLD)){
     		if(target_weapon_slot == -1 && (gun_instance == null)){
     			for(int i=0; i<10; ++i){
@@ -796,7 +796,7 @@ public class AimScript:MonoBehaviour{
     	}
     	return insert_mag_with_number_key;
     }
-    
+
     public void HandleGunControls(bool insert_mag_with_number_key) {
     	GunScript gun_script = GetGunScript();
     	if(RInput.GetButton(RInput.gun.Gun.Trigger)){
@@ -837,17 +837,17 @@ public class AimScript:MonoBehaviour{
     		gun_script.ToggleBoltLock();
     	}
     	if(RInput.GetButtonDown(RInput.gun.Gun.Safety)){
-    		gun_script.ToggleSafety();			
-    	}	
+    		gun_script.ToggleSafety();
+    	}
     	if(RInput.GetButtonDown(RInput.gun.Gun.FireSelector)){
-    		gun_script.ToggleAutoMod();			
+    		gun_script.ToggleAutoMod();
     	}
     	if(RInput.GetButtonDown(RInput.gun.Gun.SwingOutCylinder)){
     		gun_script.SwingOutCylinder();
-    	}	
+    	}
     	if(RInput.GetButtonDown(RInput.gun.Gun.CloseCylinder)){
     		gun_script.CloseCylinder();
-    	}	
+    	}
     	if(RInput.GetButton(RInput.gun.Gun.ExtractorRod)){
     		gun_script.ExtractorRod();
     	}
@@ -862,7 +862,7 @@ public class AimScript:MonoBehaviour{
     	}
     	if(RInput.GetAxis(RInput.gun.Gun.SpinCylinder) != 0.0f){
     		gun_script.RotateCylinder((int)RInput.GetAxis(RInput.gun.Gun.SpinCylinder));
-    	}		
+    	}
     	if(RInput.GetButtonDown(RInput.gun.Gun.InsertRound)){
     		if(loose_bullets.Count > 0){
     			if(GetGunScript().AddRoundToCylinder()){
@@ -897,17 +897,17 @@ public class AimScript:MonoBehaviour{
     	} else {
     		gun_tilt = GunTilt.RIGHT;
     	}
-    	
+
     	slide_pose_spring.target_state = 0.0f;
     	reload_pose_spring.target_state = 0.0f;
     	press_check_pose_spring.target_state = 0.0f;
-    	
+
     	if(gun_script.IsSafetyOn()){
     		reload_pose_spring.target_state = 0.2f;
     		slide_pose_spring.target_state = 0.0f;
     		gun_tilt = GunTilt.RIGHT;
     	}
-    	
+
     	if(gun_script.IsSlideLocked() && !gun_script.HasGunComponent(GunAspect.OPEN_BOLT_FIRING)){
     		if(gun_tilt != GunTilt.LEFT){
     			reload_pose_spring.target_state = 0.7f;
@@ -922,15 +922,15 @@ public class AimScript:MonoBehaviour{
     			reload_pose_spring.target_state = 1.0f;
     		}
     	}
-    	
+
     	alternative_stance_pose_spring.target_state = gun_script.IsInAlternativeStance() ? 1f : 0f;
-    	
+
     	if(gun_script.IsPressCheck()){
     		slide_pose_spring.target_state = 0.0f;
     		reload_pose_spring.target_state = 0.0f;
     		press_check_pose_spring.target_state = 0.6f;
     	}
-    	
+
     	add_rounds_pose_spring.target_state = 0.0f;
     	eject_rounds_pose_spring.target_state = 0.0f;
     	inspect_cylinder_pose_spring.target_state = 0.0f;
@@ -941,10 +941,10 @@ public class AimScript:MonoBehaviour{
     	} else if(gun_script.IsCylinderOpen()){
     		inspect_cylinder_pose_spring.target_state = 1.0f;
     	}
-    	
+
     	Vector2 recoil_transfer = gun_script.GetRecoilTransfer();
     	Vector2 rotation_transfer = gun_script.GetRecoilRotation();
-    	
+
     	x_recoil_spring.vel += recoil_transfer.x;
     	y_recoil_spring.vel += recoil_transfer.y;
     	rotation_x += rotation_transfer.x;
@@ -954,7 +954,7 @@ public class AimScript:MonoBehaviour{
     		next_head_recoil_delay = (next_head_recoil_delay + 1)%kMaxHeadRecoil;
     	}
     	gun_script.ResetRecoil();
-    	
+
     	if(gun_script.IsReadyToRemoveMagazine() && (magazine_instance_in_hand == null)){
     		magazine_instance_in_hand = gun_script.GrabMag();
     		mag_stage = HandMagStage.HOLD;
@@ -976,12 +976,12 @@ public class AimScript:MonoBehaviour{
     		}
     	}
     }
-    
+
     public void HandleControls() {
     	if(RInput.GetButton(RInput.player.Player.Pickup)){
     		HandleGetControl();
     	}
-    	
+
     	for(int i = 0; i < kMaxHeadRecoil; ++i){
     		if(head_recoil_delay[i] != -1.0f){
     			head_recoil_delay[i] -= Time.deltaTime;
@@ -992,9 +992,9 @@ public class AimScript:MonoBehaviour{
     			}
     		}
     	}
-    	
+
     	bool insert_mag_with_number_key = HandleInventoryControls();
-    	
+
     	if(RInput.GetButtonDown(RInput.player.Player.Drop) || queue_drop){
     		if(mag_stage == HandMagStage.HOLD){
     			mag_stage = HandMagStage.EMPTY;
@@ -1024,7 +1024,7 @@ public class AimScript:MonoBehaviour{
                 queue_drop = false;
             }
     	}
-    	
+
     	if(RInput.GetButtonDown(RInput.gun.Gun.Eject)){
     		if(mag_stage == HandMagStage.EMPTY && (gun_instance != null)){
     			if(gun_instance.GetComponent<GunScript>().IsMagCurrentlyEjecting()){
@@ -1037,7 +1037,7 @@ public class AimScript:MonoBehaviour{
     			hold_pose_spring.target_state = 1.0f;
     		}
     	}
-    	
+
     	if(gun_instance != null){
     		HandleGunControls(insert_mag_with_number_key);
     	} else if(mag_stage == HandMagStage.HOLD){
@@ -1073,11 +1073,11 @@ public class AimScript:MonoBehaviour{
             }
         }
     }
-    
+
     public void StartTapePlay() {
     	GetComponent<AudioSource>().PlayOneShot(holder.sound_tape_start, 1.0f * Preferences.voice_volume);
     	audiosource_tape_background.Play();
-    	if(tape_in_progress && start_tape_delay == 0.0f){ 
+    	if(tape_in_progress && start_tape_delay == 0.0f){
     		audiosource_audio_content.Play();
     	}
     	if(!tape_in_progress && tapes_remaining.Count > 0){
@@ -1092,7 +1092,7 @@ public class AimScript:MonoBehaviour{
     	audiosource_tape_background.pitch = 0.1f;
     	audiosource_audio_content.pitch = 0.1f;
     }
-    
+
     public void StopTapePlay() {
     	GetComponent<AudioSource>().PlayOneShot(holder.sound_tape_end, 1.0f * Preferences.voice_volume);
     	if(tape_in_progress){
@@ -1103,14 +1103,14 @@ public class AimScript:MonoBehaviour{
     		audiosource_audio_content.Stop();
     	}
     }
-    
+
     public void StartWin() {
     	if(main_client_control){
     		GetComponent<MusicScript>().HandleEvent(MusicEvent.WON);
     	}
     	won = true;
     }
-    
+
     public void ApplyPose(string name,float amount){
     	Transform pose = gun_instance.transform.Find(name);
     	if(amount == 0.0f || (pose == null)){
@@ -1124,12 +1124,12 @@ public class AimScript:MonoBehaviour{
     		pose.rotation,
     		amount);
     }
-    
+
     public void UpdateTape() {
     	if(tapes_heard.Count + unplayed_tapes + (tape_in_progress ? 1 : 0) >= total_tapes.Count) {
     		GetComponent<SpeedrunTimer>().StopTimer();
     	}
-    
+
     	if(!tape_in_progress && unplayed_tapes > 0){
     		--unplayed_tapes;
     		StartTapePlay();
@@ -1141,7 +1141,7 @@ public class AimScript:MonoBehaviour{
     			StopTapePlay();
     		}
     	}
-    	if(tape_in_progress && audiosource_tape_background.isPlaying){ 
+    	if(tape_in_progress && audiosource_tape_background.isPlaying){
     		GetComponent<MusicScript>().SetMystical((tapes_heard.Count+1.0f)/total_tapes.Count);
     		audiosource_tape_background.volume = Preferences.voice_volume;
     		audiosource_tape_background.pitch = Mathf.Min(1.0f,audiosource_audio_content.pitch + Time.deltaTime * 3.0f);
@@ -1171,7 +1171,7 @@ public class AimScript:MonoBehaviour{
     		}
     	}
     }
-    
+
     public void UpdateHealth() {
     	if(dying){
     		health -= Time.deltaTime;
@@ -1182,7 +1182,7 @@ public class AimScript:MonoBehaviour{
     		dying = false;
     	}
     }
-    
+
     public void UpdateHelpToggle() {
     	if(RInput.GetButton(RInput.player.Player.HelpButton)){
     		help_hold_time += Time.deltaTime;
@@ -1206,13 +1206,13 @@ public class AimScript:MonoBehaviour{
     		just_started_help = false;
     	}
     }
-    
+
     public void UpdateLevelResetButton() {
     	if(RInput.GetButtonDown(RInput.player.Player.LevelReset)){
     		level_reset_hold = 0.01f;
     	}
     	if(level_reset_hold != 0.0f && RInput.GetButton(RInput.player.Player.LevelReset)){
-    		level_reset_hold += Time.deltaTime; 
+    		level_reset_hold += Time.deltaTime;
     		dead_volume_fade = Mathf.Min(1.0f-level_reset_hold * 0.5f, dead_volume_fade);
     		dead_fade = level_reset_hold * 0.5f;
     		if(level_reset_hold >= 2.0f){
@@ -1223,7 +1223,7 @@ public class AimScript:MonoBehaviour{
     		level_reset_hold = 0.0f;
     	}
     }
-    
+
     public void UpdateLevelEndEffects() {
     	if(won){
     		win_fade = Mathf.Min(1.0f, win_fade + Time.deltaTime * 0.1f);
@@ -1237,7 +1237,7 @@ public class AimScript:MonoBehaviour{
     		view_rotation_x += head_tilt_x_vel * Time.deltaTime;
     		view_rotation_y += head_tilt_y_vel * Time.deltaTime;
     		float min_fall = character_controller.height * character_controller.transform.localScale.y * -1.0f;
-    		if(head_fall < min_fall && head_fall_vel < 0.0f){			
+    		if(head_fall < min_fall && head_fall_vel < 0.0f){
     			if(Mathf.Abs(head_fall_vel) > 0.5f){
     				head_recoil_spring_x.vel += UnityEngine.Random.Range(-10,10) * Mathf.Abs(head_fall_vel);
     				head_recoil_spring_y.vel += UnityEngine.Random.Range(-10,10) * Mathf.Abs(head_fall_vel);
@@ -1257,22 +1257,22 @@ public class AimScript:MonoBehaviour{
     		dead_volume_fade = Mathf.Min(1.0f, dead_volume_fade + Time.deltaTime * 1.5f);
     	}
     }
-    
+
     public void UpdateLevelChange() {
-    	if((dead && dead_volume_fade <= 0.0f)){ 
+    	if((dead && dead_volume_fade <= 0.0f)){
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     	}
-    	if(won && dead_volume_fade <= 0.0f){ 
+    	if(won && dead_volume_fade <= 0.0f){
             UnityEngine.SceneManagement.SceneManager.LoadScene("winscene");
     	}
     }
-    
+
     public void UpdateFallOffMapDeath() {
     	if(transform.position.y < -1){
     		InstaKill();
     	}
     }
-    
+
     public void UpdateAimSpring() {
     	bool offset_aim_target = false;
     	if((RInput.GetButton(RInput.player.Player.AimHold) || aim_toggle) && !dead && (gun_instance != null)){
@@ -1293,18 +1293,18 @@ public class AimScript:MonoBehaviour{
     		aim_spring.target_state = 1.0f;
     	}
     }
-    
+
     public void UpdateCameraRotationControls() {
     	rotation_y_min_leeway = Mathf.Lerp(0.0f,kRotationYMinLeeway,aim_spring.state);
     	rotation_y_max_leeway = Mathf.Lerp(0.0f,kRotationYMaxLeeway,aim_spring.state);
     	rotation_x_leeway = Mathf.Lerp(0.0f,kRotationXLeeway,aim_spring.state);
-    	
+
     	if(PlayerPrefs.GetInt("lock_gun_to_center", 0)==1){
     		rotation_y_min_leeway = 0.0f;
     		rotation_y_max_leeway = 0.0f;
     		rotation_x_leeway = 0.0f;
     	}
-    	
+
     	sensitivity_x = Preferences.mouse_sensitivity * 10.0f;
     	sensitivity_y = Preferences.mouse_sensitivity * 10.0f;
     	if(PlayerPrefs.GetInt("mouse_invert", 0) == 1){
@@ -1312,14 +1312,14 @@ public class AimScript:MonoBehaviour{
     	} else {
     		sensitivity_y = Mathf.Abs(sensitivity_y);
     	}
-    	
+
     	bool in_menu = optionsmenuscript.IsMenuShown();
     	if(!dead && !in_menu){
 			Vector2 mouse_input = RInput.GetAxis2D(RInput.player.Player.AimDelta);
     		rotation_x += mouse_input.x * sensitivity_x;
     		rotation_y += mouse_input.y * sensitivity_y;
     		rotation_y = Mathf.Clamp (rotation_y, min_angle_y, max_angle_y);
-    	
+
     		if((RInput.GetButton(RInput.player.Player.AimHold) || aim_toggle) && (gun_instance != null)){
     			view_rotation_y = Mathf.Clamp(view_rotation_y, rotation_y - rotation_y_min_leeway, rotation_y + rotation_y_max_leeway);
     			view_rotation_x = Mathf.Clamp(view_rotation_x, rotation_x - rotation_x_leeway, rotation_x + rotation_x_leeway);
@@ -1327,16 +1327,16 @@ public class AimScript:MonoBehaviour{
     			view_rotation_x += mouse_input.x * sensitivity_x;
     			view_rotation_y += mouse_input.y * sensitivity_y;
     			view_rotation_y = Mathf.Clamp (view_rotation_y, min_angle_y, max_angle_y);
-    			
+
     			rotation_y = Mathf.Clamp(rotation_y, view_rotation_y - rotation_y_max_leeway, view_rotation_y + rotation_y_min_leeway);
     			rotation_x = Mathf.Clamp(rotation_x, view_rotation_x - rotation_x_leeway, view_rotation_x + rotation_x_leeway);
     		}
     	}
     }
-    
+
     public void UpdateCameraAndPlayerTransformation() {
     	main_camera.transform.localEulerAngles = new Vector3(-view_rotation_y, view_rotation_x, head_tilt);
-    	main_camera.transform.localEulerAngles += new Vector3(head_recoil_spring_y.state, head_recoil_spring_x.state, 0.0f); 
+    	main_camera.transform.localEulerAngles += new Vector3(head_recoil_spring_y.state, head_recoil_spring_x.state, 0.0f);
     	var tmp_cs1 = character_controller.transform.localEulerAngles;
         tmp_cs1.y = view_rotation_x;
         character_controller.transform.localEulerAngles = tmp_cs1;
@@ -1346,17 +1346,17 @@ public class AimScript:MonoBehaviour{
         tmp_cs2.y += head_fall;
         main_camera.transform.position = tmp_cs2;
     }
-    
+
     public void UpdateGunTransformation() {
     	Vector3 aim_dir = AimDir();
-    	Vector3 aim_pos = AimPos();	
-    	
+    	Vector3 aim_pos = AimPos();
+
     	Vector3 unaimed_dir = (transform.forward + new Vector3(0.0f,-1.0f,0.0f)).normalized;
     	Vector3 unaimed_pos = main_camera.transform.position + unaimed_dir*GunDist();
-    	 
+
     	gun_instance.transform.position = mix(unaimed_pos, aim_pos, aim_spring.state);
     	gun_instance.transform.forward = mix(unaimed_dir, aim_dir, aim_spring.state);
-      	
+
     	ApplyPose("pose_slide_pull", slide_pose_spring.state);
     	ApplyPose("pose_reload", reload_pose_spring.state);
     	ApplyPose("pose_press_check", press_check_pose_spring.state);
@@ -1364,80 +1364,80 @@ public class AimScript:MonoBehaviour{
     	ApplyPose("pose_add_rounds", add_rounds_pose_spring.state);
     	ApplyPose("pose_eject_rounds", eject_rounds_pose_spring.state);
     	ApplyPose("pose_alternative_stance", alternative_stance_pose_spring.state);
-    
+
     	gun_instance.transform.RotateAround(
     		gun_instance.transform.Find("point_recoil_rotate").position,
     		gun_instance.transform.rotation * new Vector3(1.0f,0.0f,0.0f),
     		x_recoil_spring.state);
-    		
+
     	gun_instance.transform.RotateAround(
     		gun_instance.transform.Find("point_recoil_rotate").position,
     		new Vector3(0.0f,1.0f,0.0f),
-    		y_recoil_spring.state); 
+    		y_recoil_spring.state);
     }
-    
+
     public void UpdateFlashlightTransformation() {
     	Vector3 flashlight_hold_pos = main_camera.transform.position + main_camera.transform.rotation*new Vector3(-0.15f,-0.01f,0.15f);
     	Quaternion flashlight_hold_rot = main_camera.transform.rotation;
-    	
+
     	Vector3 flashlight_pos = flashlight_hold_pos;
     	Quaternion flashlight_rot = flashlight_hold_rot;
-    
+
     	held_flashlight.transform.position = flashlight_pos;
     	held_flashlight.transform.rotation = flashlight_rot;
-    	
+
     	held_flashlight.transform.RotateAround(
     		held_flashlight.transform.Find("point_recoil_rotate").position,
     		held_flashlight.transform.rotation * new Vector3(1.0f,0.0f,0.0f),
     		x_recoil_spring.state * 0.3f);
-    		
+
     	held_flashlight.transform.RotateAround(
     		held_flashlight.transform.Find("point_recoil_rotate").position,
     		new Vector3(0.0f,1.0f,0.0f),
     		y_recoil_spring.state * 0.3f);
-    
+
     	flashlight_pos = held_flashlight.transform.position;
     	flashlight_rot = held_flashlight.transform.rotation;
-    		
+
     	if(gun_instance != null){
     		flashlight_aim_pos = gun_instance.transform.position + gun_instance.transform.rotation*new Vector3(0.07f,-0.03f,0.0f);
     		flashlight_aim_rot = gun_instance.transform.rotation;
-    		
+
     		flashlight_aim_pos -= main_camera.transform.position;
     		flashlight_aim_pos = Quaternion.Inverse(main_camera.transform.rotation) * flashlight_aim_pos;
     		flashlight_aim_rot = Quaternion.Inverse(main_camera.transform.rotation) * flashlight_aim_rot;
     	}
-    
+
     	flashlight_pos = mix(flashlight_pos, main_camera.transform.rotation * flashlight_aim_pos + main_camera.transform.position, aim_spring.state);
     	flashlight_rot = mix(flashlight_rot, main_camera.transform.rotation * flashlight_aim_rot, aim_spring.state);
-    	 
+
     	Vector3 flashlight_mouth_pos = main_camera.transform.position + main_camera.transform.rotation*new Vector3(0.0f,-0.08f,0.05f);
     	Quaternion flashlight_mouth_rot = main_camera.transform.rotation;
-    	
+
     	flashlight_mouth_spring.target_state = 0.0f;
     	if(magazine_instance_in_hand != null){
     		flashlight_mouth_spring.target_state = 1.0f;
     	}
     	flashlight_mouth_spring.target_state = Mathf.Max(flashlight_mouth_spring.target_state,
     		(inspect_cylinder_pose_spring.state + eject_rounds_pose_spring.state + (press_check_pose_spring.state/0.6f) + (reload_pose_spring.state/0.7f) + slide_pose_spring.state) * aim_spring.state);
-    	
+
     	flashlight_mouth_spring.Update();
-    	 
+
     	flashlight_pos = mix(flashlight_pos, flashlight_mouth_pos, flashlight_mouth_spring.state);
     	flashlight_rot = mix(flashlight_rot, flashlight_mouth_rot, flashlight_mouth_spring.state);
-    	
+
     	flashlight_pos = mix(flashlight_pos, flash_ground_pos, flash_ground_pose_spring.state);
        	flashlight_rot = mix(flashlight_rot, flash_ground_rot, flash_ground_pose_spring.state);
-       		
+
     	held_flashlight.transform.position = flashlight_pos;
     	held_flashlight.transform.rotation = flashlight_rot;
     }
-    
+
     public void UpdateMagazineTransformation() {
     	if(gun_instance != null){
     		mag_pos = gun_instance.transform.position;
     		mag_rot = gun_instance.transform.rotation;
-    		mag_pos += (gun_instance.transform.Find("point_mag_to_insert").position - 
+    		mag_pos += (gun_instance.transform.Find("point_mag_to_insert").position -
     				    gun_instance.transform.Find("point_mag_inserted").position);
         }
        if(mag_stage == HandMagStage.HOLD || mag_stage == HandMagStage.HOLD_TO_INSERT){
@@ -1446,7 +1446,7 @@ public class AimScript:MonoBehaviour{
     		Quaternion hold_rot = main_camera.transform.rotation * Quaternion.AngleAxis(mag_script.hold_rotation.x, new Vector3(0.0f,1.0f,0.0f)) * Quaternion.AngleAxis(mag_script.hold_rotation.y, new Vector3(1.0f,0.0f,0.0f));
        		hold_pos = mix(hold_pos, mag_ground_pos, mag_ground_pose_spring.state);
     	   	hold_rot = mix(hold_rot, mag_ground_rot, mag_ground_pose_spring.state);
-       		if(hold_pose_spring.state != 1.0f){ 
+       		if(hold_pose_spring.state != 1.0f){
        			float amount = hold_pose_spring.state;
     	   		magazine_instance_in_hand.transform.position = mix(mag_pos, hold_pos, amount);
     			magazine_instance_in_hand.transform.rotation = mix(mag_rot, hold_rot, amount);
@@ -1457,9 +1457,9 @@ public class AimScript:MonoBehaviour{
     	} else {
     		magazine_instance_in_hand.transform.position = mag_pos;
     		magazine_instance_in_hand.transform.rotation = mag_rot;
-    	} 
+    	}
     }
-    
+
     public void UpdateInventoryTransformation() {
     	int i = 0;
     	WeaponSlot slot = null;
@@ -1468,7 +1468,7 @@ public class AimScript:MonoBehaviour{
     		if(slot.type == WeaponSlotType.EMPTY){
     			continue;
     		}
-    		slot.obj.transform.localScale = new Vector3(1.0f,1.0f,1.0f); 
+    		slot.obj.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
     	}
     	for(i=0; i<10; ++i){
     		slot = weapon_slots[i];
@@ -1484,25 +1484,25 @@ public class AimScript:MonoBehaviour{
     				slot.type = WeaponSlotType.EMPTY;
     				slot.spring.state = 0.0f;
     			}
-    		} 
+    		}
     		float scale = 0.0f;
     		Vector3 target_pos = main_camera.transform.position;
     		if(main_camera.TryGetComponent(out Camera camera)) {
     			target_pos += camera.ScreenPointToRay(new Vector3(camera.pixelWidth * (0.05f + i*0.15f), camera.pixelHeight * 0.17f,0.0f)).direction * 0.3f;
     		}
     		slot.obj.transform.position = mix(
-    			start_pos, 
-    			target_pos, 
+    			start_pos,
+    			target_pos,
     			slot.spring.state);
     		scale = 0.3f * slot.spring.state + (1.0f - slot.spring.state);
     		var tmp_cs3 = slot.obj.transform.localScale;
             tmp_cs3.x *= scale;
             tmp_cs3.y *= scale;
             tmp_cs3.z *= scale;
-            slot.obj.transform.localScale = tmp_cs3; 
+            slot.obj.transform.localScale = tmp_cs3;
     		slot.obj.transform.rotation = mix(
-    			start_rot, 
-    			main_camera.transform.rotation * Quaternion.AngleAxis(90.0f, new Vector3(0.0f,1.0f,0.0f)), 
+    			start_rot,
+    			main_camera.transform.rotation * Quaternion.AngleAxis(90.0f, new Vector3(0.0f,1.0f,0.0f)),
     			slot.spring.state);
     		Renderer[] renderers = slot.obj.GetComponentsInChildren<Renderer>();
     		foreach(Renderer renderer in renderers){
@@ -1511,17 +1511,17 @@ public class AimScript:MonoBehaviour{
     		slot.spring.Update();
     	}
     }
-    
+
     public void UpdateLooseBulletDisplay() {
     	bool can_add_rounds = gun_instance && gun_instance.GetComponent<GunScript>().IsAddingRounds();
     	if((mag_stage == HandMagStage.HOLD && (gun_instance == null)) || picked_up_bullet_delay > 0.0f || can_add_rounds){
     		show_bullet_spring.target_state = 1.0f;
     		picked_up_bullet_delay = Mathf.Max(0.0f, picked_up_bullet_delay - Time.deltaTime);
-    	} else {	
+    	} else {
     		show_bullet_spring.target_state = 0.0f;
     	}
     	show_bullet_spring.Update();
-    	
+
     	for(int i=0; i<loose_bullets.Count; ++i){
     		Spring spring = loose_bullet_spring[i];
     		spring.Update();
@@ -1541,8 +1541,8 @@ public class AimScript:MonoBehaviour{
     		bullet.transform.rotation = main_camera.transform.rotation * Quaternion.AngleAxis(90.0f, new Vector3(-1.0f,0.0f,0.0f));
     	}
     }
-    
-    public void UpdateSprings() {	
+
+    public void UpdateSprings() {
     	slide_pose_spring.Update();
     	reload_pose_spring.Update();
     	press_check_pose_spring.Update();
@@ -1560,7 +1560,7 @@ public class AimScript:MonoBehaviour{
     	}
     	flash_ground_pose_spring.Update();
     }
-    
+
     public void UpdatePickupMagnet() {
     	Vector3 attract_pos = transform.position - new Vector3(0.0f,character_controller.height * 0.2f,0.0f);
     	for(int i=0; i<items_being_picked_up.Count; ++i){
@@ -1585,7 +1585,7 @@ public class AimScript:MonoBehaviour{
     	}
     	items_being_picked_up.Remove(null);
     }
-    
+
     public void Update() {
     	if(main_client_control){
     		UpdateTape();
@@ -1593,7 +1593,7 @@ public class AimScript:MonoBehaviour{
     	UpdateFallOffMapDeath();
     	UpdateHealth();
     	if(main_client_control){
-    		UpdateHelpToggle();	
+    		UpdateHelpToggle();
     		UpdateLevelResetButton();
     		UpdateLevelChange();
     	}
@@ -1606,13 +1606,13 @@ public class AimScript:MonoBehaviour{
     	CharacterMotorUpdate();
     	UpdateAimSpring();
     	UpdateCameraRotationControls();
-    	UpdateCameraAndPlayerTransformation();	
+    	UpdateCameraAndPlayerTransformation();
     	if(gun_instance != null){
     		UpdateGunTransformation();
     	}
     	if(held_flashlight != null){
     		UpdateFlashlightTransformation();
-    	}				
+    	}
     	if(magazine_instance_in_hand != null){
     		UpdateMagazineTransformation();
     	}
@@ -1622,10 +1622,10 @@ public class AimScript:MonoBehaviour{
     	if(!dead && !in_menu){
     		HandleControls();
     	}
-    	UpdateSprings();	
+    	UpdateSprings();
     	UpdatePickupMagnet();
     }
-    
+
     public void FixedUpdate() {
     	CharacterMotorFixedUpdate();
 }
@@ -1642,19 +1642,19 @@ public class AimScript:MonoBehaviour{
     	} else return false;
     	return true;
     }
-    
+
     public bool CanLoadBulletsInMag() {
     	return (gun_instance == null) && mag_stage == HandMagStage.HOLD && loose_bullets.Count > 0 && !magazine_instance_in_hand.GetComponent<mag_script>().IsFull();
     }
-    
+
     public bool CanRemoveBulletFromMag() {
     	return (gun_instance == null) && mag_stage == HandMagStage.HOLD && magazine_instance_in_hand.GetComponent<mag_script>().NumRounds() > 0;
     }
-    
+
     public bool ShouldDrawWeapon() {
     	return (gun_instance == null) && !CanLoadBulletsInMag();
     }
-    
+
     public int GetMostLoadedMag() {
     	int max_rounds = 0;
     	int max_rounds_slot = -1;
@@ -1669,7 +1669,7 @@ public class AimScript:MonoBehaviour{
     	}
     	return max_rounds_slot;
     }
-    
+
     public bool ShouldPutMagInInventory() {
     	int rounds = magazine_instance_in_hand.GetComponent<mag_script>().NumRounds();
     	int most_loaded = GetMostLoadedMag();
@@ -1681,7 +1681,7 @@ public class AimScript:MonoBehaviour{
     	}
     	return false;
     }
-    
+
     public int GetEmptySlot() {
     	int empty_slot = -1;
     	for(int i=0; i<10; ++i){
@@ -1692,7 +1692,7 @@ public class AimScript:MonoBehaviour{
     	}
     	return empty_slot;
     }
-    
+
     public int GetFlashlightSlot() {
     	int flashlight_slot = -1;
     	for(int i=0; i<10; ++i){
@@ -1703,7 +1703,7 @@ public class AimScript:MonoBehaviour{
     	}
     	return flashlight_slot;
     }
-    
+
     /// <summary> Draws a line in the help menu, can only be called from within OnGUI </summary>
     private void DrawHelpLine(string text, bool bold = false, float opacity = 1f) {
         float width = Screen.width * 0.5f;
@@ -1718,7 +1718,7 @@ public class AimScript:MonoBehaviour{
 
         help_text_style.normal.textColor = color_shadow;
         GUI.Label(new Rect(width - 4f, help_text_offset + 0.5f, width + 0.5f, help_text_offset + 20 + 0.5f), text, help_text_style);
-    
+
         help_text_style.normal.textColor = color_text;
         GUI.Label(new Rect(width - 4.5f, help_text_offset, width, help_text_offset + 30), text, help_text_style);
         help_text_offset += 20;
@@ -1757,7 +1757,7 @@ public class AimScript:MonoBehaviour{
     			if(tape_in_progress){
     				DrawHelpLine($"Pause/Resume tape player: [ {GetBoundKey(RInput.player.Player.TapePlayer)} ]");
     			}
-    			
+
     			DrawHelpLine("Look: [ Mouse ]");
     			DrawHelpLine($"Move: [ {GetBoundKey(RInput.player.Player.Move)} ]");
     			DrawHelpLine($"Jump: [ {GetBoundKey(RInput.player.Player.Jump)} ]");
@@ -1856,7 +1856,7 @@ public class AimScript:MonoBehaviour{
     				}
     				DrawHelpLine($"Drop magazine: tap [ {GetBoundKey(RInput.player.Player.Drop)} ]");
     			}
-    			
+
     			DrawHelpLine("");
     			if(show_advanced_help){
     				DrawHelpLine("Advanced help:");
@@ -1926,21 +1926,21 @@ public class AimScript:MonoBehaviour{
     		}
     	}
     }
-    
+
     float forward_input_delay = 10.0f;
     float old_vert_axis = 0.0f;
     bool bool_running = false;
-    
+
     // Update is called once per frame
     public void PlatformInputControllerUpdate() {
     	// Get the input vector from kayboard or analog stick
     	Vector2 input = RInput.GetAxis2D(RInput.player.Player.Move);
     	Vector3 directionVector = new Vector3(input.x, 0.0f, input.y);
-    	
+
     	if(old_vert_axis < 0.9f && input.y >= 0.9f){
     		if(!crouching && forward_input_delay < 0.4f && !GetComponent<AimScript>().IsAiming()){
     			SetRunning(Mathf.Clamp((0.4f-forward_input_delay)/0.2f,0.01f,1.0f));
-    			bool_running = true;			
+    			bool_running = true;
     		}
     		forward_input_delay = 0.0f;
     	}
@@ -1953,68 +1953,68 @@ public class AimScript:MonoBehaviour{
     		directionVector.z = 1.0f;
     	}
     	old_vert_axis = input.y;
-    	
+
     	if (directionVector != Vector3.zero) {
     		// Get the length of the directon vector and then normalize it
     		// Dividing by the length is cheaper than normalizing when we already have the length anyway
     		float directionLength = directionVector.magnitude;
     		directionVector = directionVector / directionLength;
-    		
+
     		// Make sure the length is no bigger than 1
     		directionLength = Mathf.Min(1.0f, directionLength);
-    		
+
     		// Make the input vector more sensitive towards the extremes and less sensitive in the middle
     		// This makes it easier to control slow speeds when using analog sticks
     		directionLength = directionLength * directionLength;
-    		
+
     		// Multiply the normalized direction vector by the modified length
     		directionVector = directionVector * directionLength;
     	}
-    	
+
     	// Apply the direction to the CharacterMotor
     	inputMoveDirection = transform.rotation * directionVector;
     	inputJump = RInput.GetButton(RInput.player.Player.Jump);
     }
-    
+
     // This makes the character turn to face the current movement speed per default.
     bool autoRotate = false;
     const float maxRotationSpeed = 360.0f;
-    
+
     // Update is called once per frame
     public void FPSInputControllerUpdate() {
     	// Get the input vector from kayboard or analog stick
     	Vector2 input = RInput.GetAxis2D(RInput.player.Player.Move);
     	Vector3 directionVector = new Vector3(input.x, 0.0f, input.y);
-    	
+
     	if (directionVector != Vector3.zero) {
     		// Get the length of the directon vector and then normalize it
     		// Dividing by the length is cheaper than normalizing when we already have the length anyway
     		float directionLength = directionVector.magnitude;
     		directionVector = directionVector / directionLength;
-    		
+
     		// Make sure the length is no bigger than 1
     		directionLength = Mathf.Min(1.0f, directionLength);
-    		
+
     		// Make the input vector more sensitive towards the extremes and less sensitive in the middle
     		// This makes it easier to control slow speeds when using analog sticks
     		directionLength = directionLength * directionLength;
-    		
+
     		// Multiply the normalized direction vector by the modified length
     		directionVector = directionVector * directionLength;
     	}
-    	
+
     	// Rotate the input vector into camera space so up is camera's up and right is camera's right
     	directionVector = Camera.main.transform.rotation * directionVector;
-    	
+
     	// Rotate input vector to be perpendicular to character's up vector
     	Quaternion camToCharacterSpace = Quaternion.FromToRotation(-Camera.main.transform.forward, transform.up);
     	directionVector = (camToCharacterSpace * directionVector);
-    	
+
     	// Apply the direction to the CharacterMotor
     	inputMoveDirection = directionVector;
     	inputJump = RInput.GetButton(RInput.player.Player.Jump);
-    	
-    	// Set rotation to the move direction	
+
+    	// Set rotation to the move direction
     	if (autoRotate && directionVector.sqrMagnitude > 0.01f) {
     		Vector3 newForward = ConstantSlerp(
     			transform.forward,
@@ -2025,53 +2025,53 @@ public class AimScript:MonoBehaviour{
     		transform.rotation = Quaternion.LookRotation(newForward, transform.up);
     	}
     }
-    
+
     public Vector3 ProjectOntoPlane(Vector3 v,Vector3 normal) {
     	return v - Vector3.Project(v, normal);
     }
-    
+
     public Vector3 ConstantSlerp(Vector3 from,Vector3 to,float angle) {
     	float value = Mathf.Min(1.0f, angle / Vector3.Angle(from, to));
     	return Vector3.Slerp(from, to, value);
     }
-    
+
     //float kStandHeight = 2.0f;
     //float kCrouchHeight = 1.0f;
     bool crouching = false;
     float step_timer = 0.0f;
     float head_bob = 0.0f;
-    
+
     public List<AudioClip> sound_footstep_jump_concrete;
     public List<AudioClip> sound_footstep_run_concrete;
     public List<AudioClip> sound_footstep_walk_concrete;
     public List<AudioClip> sound_footstep_crouchwalk_concrete;
-    
+
     float running = 0.0f;
-    
+
     Spring height_spring = new Spring(0.0f,0.0f,100.0f,0.00001f);
     Vector3 die_dir;
-    
+
     // Does this script currently respond to input?
     bool canControl = true;
-    
+
     bool useFixedUpdate = true;
-    
+
     // For the next variables, @System.NonSerialized tells Unity to not serialize the variable or show it in the inspector view.
     // Very handy for organization!
-    
+
     // The current global direction we want the character to move in.
     [System.NonSerialized]
     public Vector3 inputMoveDirection = Vector3.zero;
-    
+
     // Is the jump button held down? We use this interface instead of checking
     // for the jump button directly so this script can also be used by AIs.
     [System.NonSerialized]
     public bool inputJump = false;
-    
+
     public void SetRunning(float val){
     	running = val;
     }
-    
+
     public float GetRunning(){
     	return running;
 }
@@ -2083,38 +2083,38 @@ public class AimScript:MonoBehaviour{
     public CharacterMotorMovingPlatform movingPlatform = new CharacterMotorMovingPlatform();
 
     public CharacterMotorSliding sliding = new CharacterMotorSliding();
-    
+
     [System.NonSerialized]
     public bool grounded = true;
-    
+
     [System.NonSerialized]
     public Vector3 groundNormal = Vector3.zero;
-    
+
     Vector3 lastGroundNormal = Vector3.zero;
-    
+
     Transform tr;
-    
+
     CharacterController controller;
-    
+
     public void Awake() {
     	controller = GetComponent<CharacterController>();
     	tr = transform;
     }
-    
+
     public Vector3 GetVelocity() {
     	return movement.velocity;
     }
-    
+
     void UpdateFunction() {
     	// We copy the actual velocity into a temporary variable that we can manipulate.
     	Vector3 velocity = movement.velocity;
-    	
+
     	// Update velocity based on input
     	velocity = ApplyInputVelocityChange(velocity);
-    	
+
     	// Apply gravity and jumping force
     	velocity = ApplyGravityAndJumping (velocity);
-    	
+
     	// Moving platform support
     	Vector3 moveDistance = Vector3.zero;
     	if (MoveWithPlatform()) {
@@ -2122,40 +2122,40 @@ public class AimScript:MonoBehaviour{
     		moveDistance = (newGlobalPoint - movingPlatform.activeGlobalPoint);
     		if (moveDistance != Vector3.zero)
     			controller.Move(moveDistance);
-    		
+
     		// Support moving platform rotation as well:
             Quaternion newGlobalRotation = movingPlatform.activePlatform.rotation * movingPlatform.activeLocalRotation;
             Quaternion rotationDiff = newGlobalRotation * Quaternion.Inverse(movingPlatform.activeGlobalRotation);
-            
+
             float yRotation = rotationDiff.eulerAngles.y;
             if (yRotation != 0) {
     	        // Prevent rotation of the local up vector
     	        tr.Rotate(0.0f, yRotation, 0.0f);
             }
     	}
-    	
+
     	// Save lastPosition for velocity calculation.
     	Vector3 lastPosition = tr.position;
-    	
+
     	// We always want the movement to be framerate independent.  Multiplying by Time.deltaTime does this.
     	Vector3 currentMovementOffset = velocity * Time.deltaTime;
-    	
+
     	// Find out how much we need to push towards the ground to avoid loosing grouning
     	// when walking down a step or over a sharp change in slope.
     	float pushDownOffset = Mathf.Max(controller.stepOffset, (new Vector3(currentMovementOffset.x, 0.0f, currentMovementOffset.z)).magnitude);
     	if (grounded)
     		currentMovementOffset -= pushDownOffset * Vector3.up;
-    	
+
     	// Reset variables that will be set by collision function
     	movingPlatform.hitPlatform = null;
     	groundNormal = Vector3.zero;
-    	
+
        	// Move our character!
     	movement.collisionFlags = controller.Move (currentMovementOffset);
-    	
+
     	movement.lastHitPoint = movement.hitPoint;
     	lastGroundNormal = groundNormal;
-    	
+
     	if (movingPlatform.enabled && movingPlatform.activePlatform != movingPlatform.hitPlatform) {
     		if (movingPlatform.hitPlatform != null) {
     			movingPlatform.activePlatform = movingPlatform.hitPlatform;
@@ -2163,15 +2163,15 @@ public class AimScript:MonoBehaviour{
     			movingPlatform.newPlatform = true;
     		}
     	}
-    	
+
     	Vector3 old_vel = movement.velocity;
-    	
-    	// Calculate the velocity based on the current and previous position.  
+
+    	// Calculate the velocity based on the current and previous position.
     	// This means our velocity will only be the amount the character actually moved as a result of collisions.
     	Vector3 oldHVelocity = new Vector3(velocity.x, 0.0f, velocity.z);
     	movement.velocity = (tr.position - lastPosition) / Time.deltaTime;
     	Vector3 newHVelocity = new Vector3(movement.velocity.x, 0.0f, movement.velocity.z);
-    	
+
     	// The CharacterController can be moved in unwanted directions when colliding with things.
     	// We want to prevent this from influencing the recorded velocity.
     	if (oldHVelocity == Vector3.zero) {
@@ -2181,7 +2181,7 @@ public class AimScript:MonoBehaviour{
     		float projectedNewVelocity = Vector3.Dot(newHVelocity, oldHVelocity) / oldHVelocity.sqrMagnitude;
     		movement.velocity = oldHVelocity * Mathf.Clamp01(projectedNewVelocity) + movement.velocity.y * Vector3.up;
     	}
-    	
+
     	if (movement.velocity.y < velocity.y - 0.001f) {
     		if (movement.velocity.y < 0) {
     			// Something is forcing the CharacterController down faster than it should.
@@ -2196,11 +2196,11 @@ public class AimScript:MonoBehaviour{
     			jumping.holdingJumpButton = false;
     		}
     	}
-    	
+
     	// We were grounded but just loosed grounding
     	if (grounded && !IsGroundedTest()) {
     		grounded = false;
-    		
+
     		// Apply inertia from platform
     		if (movingPlatform.enabled &&
     			(movingPlatform.movementTransfer == MovementTransferOnJump.InitTransfer ||
@@ -2209,7 +2209,7 @@ public class AimScript:MonoBehaviour{
     			movement.frameVelocity = movingPlatform.platformVelocity;
     			movement.velocity += movingPlatform.platformVelocity;
     		}
-    		
+
     		SendMessage("OnFall", SendMessageOptions.DontRequireReceiver);
     		// We pushed the character down to ensure it would stay on the ground if there was any.
     		// But there wasn't so now we cancel the downwards offset to make the fall smoother.
@@ -2217,7 +2217,7 @@ public class AimScript:MonoBehaviour{
     	}
     	// We were not grounded but just landed on something
     	else if (!grounded && IsGroundedTest()) {
-    		if(old_vel.y < -8.0f){
+    		if(old_vel.y < -10.0f){ // if old velocity.y less hard coded float die? - Yoshito
     			GetComponent<AimScript>().FallDeath(old_vel);
     		} else if(old_vel.y < 0.0f){
     			PlaySoundFromGroup(sound_footstep_jump_concrete, Mathf.Min(old_vel.y / -4.0f, 1.0f));
@@ -2227,29 +2227,29 @@ public class AimScript:MonoBehaviour{
     		grounded = true;
     		jumping.jumping = false;
     		StartCoroutine(SubtractNewPlatformVelocity());
-    		
+
     		SendMessage("OnLand", SendMessageOptions.DontRequireReceiver);
     	}
-    	
+
     	// Moving platforms support
     	if (MoveWithPlatform()) {
     		// Use the center of the lower half sphere of the capsule as reference point.
-    		// This works best when the character is standing on moving tilting platforms. 
+    		// This works best when the character is standing on moving tilting platforms.
     		movingPlatform.activeGlobalPoint = tr.position + Vector3.up * (controller.center.y - controller.height*0.5f + controller.radius);
     		movingPlatform.activeLocalPoint = movingPlatform.activePlatform.InverseTransformPoint(movingPlatform.activeGlobalPoint);
-    		
+
     		// Support moving platform rotation as well:
             movingPlatform.activeGlobalRotation = tr.rotation;
-            movingPlatform.activeLocalRotation = Quaternion.Inverse(movingPlatform.activePlatform.rotation) * movingPlatform.activeGlobalRotation; 
+            movingPlatform.activeLocalRotation = Quaternion.Inverse(movingPlatform.activePlatform.rotation) * movingPlatform.activeGlobalRotation;
     	}
     }
-    
+
     public void CharacterMotorFixedUpdate() {
     	if (movingPlatform.enabled) {
     		if (movingPlatform.activePlatform != null) {
     			if (!movingPlatform.newPlatform) {
     				//Vector3 lastVelocity = movingPlatform.platformVelocity;
-    				
+
     				movingPlatform.platformVelocity = (
     					movingPlatform.activePlatform.localToWorldMatrix.MultiplyPoint3x4(movingPlatform.activeLocalPoint)
     					- movingPlatform.lastMatrix.MultiplyPoint3x4(movingPlatform.activeLocalPoint)
@@ -2259,10 +2259,10 @@ public class AimScript:MonoBehaviour{
     			movingPlatform.newPlatform = false;
     		}
     		else {
-    			movingPlatform.platformVelocity = Vector3.zero;	
+    			movingPlatform.platformVelocity = Vector3.zero;
     		}
     	}
-    	
+
     	CharacterController controller = GetComponent<CharacterController>();
     	if(crouching && running == 0.0f){
     		height_spring.target_state = 0.5f + head_bob;
@@ -2281,11 +2281,11 @@ public class AimScript:MonoBehaviour{
             controller.transform.position = tmp_cs7;
     	}
     	die_dir *= 0.93f;
-    	
+
     	if (useFixedUpdate)
     		UpdateFunction();
     }
-    
+
     public void CharacterMotorUpdate() {
     	if(PlayerPrefs.GetInt("toggle_crouch", 1)==1){
     		if(!GetComponent<AimScript>().IsDead() && RInput.GetButtonDown(RInput.player.Player.Crouch)){
@@ -2295,18 +2295,18 @@ public class AimScript:MonoBehaviour{
     		if(!GetComponent<AimScript>().IsDead()){
     			crouching = RInput.GetButton(RInput.player.Player.Crouch);
     		}
-    	}	
+    	}
     	if(running > 0.0f){
     		crouching = false;
     	}
     	if (!useFixedUpdate)
     		UpdateFunction();
     }
-    
-    Vector3 ApplyInputVelocityChange(Vector3 velocity) {	
+
+    Vector3 ApplyInputVelocityChange(Vector3 velocity) {
     	if (!canControl)
     		inputMoveDirection = Vector3.zero;
-    	
+
     	// Find desired velocity
     	Vector3 desiredVelocity = Vector3.zero;
     	if (grounded && TooSteep()) {
@@ -2322,7 +2322,7 @@ public class AimScript:MonoBehaviour{
     	else {
     		desiredVelocity = GetDesiredHorizontalVelocity();
     	}
-    	
+
     	if(grounded){
     		float kSoundVolumeMult = 0.8f;
     		float step_volume = movement.velocity.magnitude * 0.15f * kSoundVolumeMult;
@@ -2353,7 +2353,7 @@ public class AimScript:MonoBehaviour{
     				} else if(running > 0.0f){
     					PlaySoundFromGroup(sound_footstep_run_concrete, step_volume);
     				} else {
-    					PlaySoundFromGroup(sound_footstep_walk_concrete, step_volume);					
+    					PlaySoundFromGroup(sound_footstep_walk_concrete, step_volume);
     				}
     				GetComponent<AimScript>().StepRecoil(step_volume/kSoundVolumeMult);
     				step_timer = 1.0f;
@@ -2363,24 +2363,24 @@ public class AimScript:MonoBehaviour{
     				if(crouching){
     					PlaySoundFromGroup(sound_footstep_crouchwalk_concrete, step_volume);
     				} else {
-    					PlaySoundFromGroup(sound_footstep_walk_concrete, step_volume);					
+    					PlaySoundFromGroup(sound_footstep_walk_concrete, step_volume);
     				}
     				GetComponent<AimScript>().StepRecoil(step_volume/kSoundVolumeMult);
     			}
     			step_timer = 0.5f;
     		}
     	}
-    	
+
     	if (movingPlatform.enabled && movingPlatform.movementTransfer == MovementTransferOnJump.PermaTransfer) {
     		desiredVelocity += movement.frameVelocity;
     		desiredVelocity.y = 0.0f;
     	}
-    	
+
     	if (grounded)
     		desiredVelocity = AdjustGroundVelocityToNormal(desiredVelocity, groundNormal);
     	else
     		velocity.y = 0.0f;
-    	
+
     	// Enforce max velocity change
     	float maxVelocityChange = GetMaxAcceleration(grounded) * Time.deltaTime;
     	Vector3 velocityChangeVector = (desiredVelocity - velocity);
@@ -2391,32 +2391,32 @@ public class AimScript:MonoBehaviour{
     	// If we're on the ground and don't have control we do apply it - it will correspond to friction.
     	if (grounded)// || canControl)
     		velocity += velocityChangeVector;
-    	
+
     	if (grounded) {
     		// When going uphill, the CharacterController will automatically move up by the needed amount.
     		// Not moving it upwards manually prevent risk of lifting off from the ground.
     		// When going downhill, DO move down manually, as gravity is not enough on steep hills.
     		velocity.y = Mathf.Min(velocity.y, 0.0f);
     	}
-    	
+
     	return velocity;
     }
-    
+
     Vector3 ApplyGravityAndJumping(Vector3 velocity) {
-    	
+
     	if (!inputJump || !canControl) {
     		jumping.holdingJumpButton = false;
     		jumping.lastButtonDownTime = -100.0f;
     	}
-    	
+
     	if (inputJump && jumping.lastButtonDownTime < 0 && canControl)
     		jumping.lastButtonDownTime = Time.time;
-    	
+
     	if (grounded)
     		velocity.y = Mathf.Min(0.0f, velocity.y) - movement.gravity * Time.deltaTime;
     	else {
     		velocity.y = movement.velocity.y - movement.gravity * Time.deltaTime;
-    		
+
     		// When jumping up we don't apply gravity for some time when the user is holding the jump button.
     		// This gives more control over jump height by pressing the button longer.
     		if (jumping.jumping && jumping.holdingJumpButton) {
@@ -2427,11 +2427,11 @@ public class AimScript:MonoBehaviour{
     				velocity += jumping.jumpDir * movement.gravity * Time.deltaTime;
     			}
     		}
-    		
+
     		// Make sure we don't fall any faster than maxFallSpeed. This gives our character a terminal velocity.
     		velocity.y = Mathf.Max (velocity.y, -movement.maxFallSpeed);
     	}
-    		
+
     	if (grounded) {
     		// Jump only if the jump button was pressed down in the last 0.2 seconds.
     		// We use this check instead of checking if it's pressed down right now
@@ -2447,17 +2447,17 @@ public class AimScript:MonoBehaviour{
     			jumping.lastStartTime = Time.time;
     			jumping.lastButtonDownTime = -100.0f;
     			jumping.holdingJumpButton = true;
-    			
+
     			// Calculate the jumping direction
     			if (TooSteep())
     				jumping.jumpDir = Vector3.Slerp(Vector3.up, groundNormal, jumping.steepPerpAmount);
     			else
     				jumping.jumpDir = Vector3.Slerp(Vector3.up, groundNormal, jumping.perpAmount);
-    			
+
     			// Apply the jumping force to the velocity. Cancel any vertical velocity first.
     			velocity.y = 0.0f;
     			velocity += jumping.jumpDir * CalculateJumpVerticalSpeed (jumping.baseHeight);
-    			
+
     			// Apply inertia from platform
     			if (movingPlatform.enabled &&
     				(movingPlatform.movementTransfer == MovementTransferOnJump.InitTransfer ||
@@ -2466,30 +2466,30 @@ public class AimScript:MonoBehaviour{
     				movement.frameVelocity = movingPlatform.platformVelocity;
     				velocity += movingPlatform.platformVelocity;
     			}
-    			
+
     			SendMessage("OnJump", SendMessageOptions.DontRequireReceiver);
     		}
     		else {
     			jumping.holdingJumpButton = false;
     		}
     	}
-    	
+
     	return velocity;
     }
-    
+
     public void OnControllerColliderHit(ControllerColliderHit hit) {
     	if (hit.normal.y > 0 && hit.normal.y > groundNormal.y && hit.moveDirection.y < 0) {
     		if ((hit.point - movement.lastHitPoint).sqrMagnitude > 0.001f || lastGroundNormal == Vector3.zero)
     			groundNormal = hit.normal;
     		else
     			groundNormal = lastGroundNormal;
-    		
+
     		movingPlatform.hitPlatform = hit.collider.transform;
     		movement.hitPoint = hit.point;
     		movement.frameVelocity = Vector3.zero;
     	}
     }
-    
+
     IEnumerator SubtractNewPlatformVelocity() {
     	// When landing, subtract the velocity of the new ground from the character's velocity
     	// since movement in ground is relative to the movement of the ground.
@@ -2509,7 +2509,7 @@ public class AimScript:MonoBehaviour{
     		movement.velocity -= movingPlatform.platformVelocity;
     	}
     }
-    
+
     bool MoveWithPlatform() {
     	return (
     		movingPlatform.enabled
@@ -2517,12 +2517,12 @@ public class AimScript:MonoBehaviour{
     		&& movingPlatform.activePlatform != null
     	);
     }
-    
+
     Vector3 GetDesiredHorizontalVelocity() {
     	if(GetComponent<AimScript>().IsDead()){
     		return die_dir;
     	}
-    	
+
     	// Find desired velocity
     	Vector3 desiredLocalDirection = tr.InverseTransformDirection(inputMoveDirection);
     	float maxSpeed = MaxSpeedInDirection(desiredLocalDirection);
@@ -2534,16 +2534,16 @@ public class AimScript:MonoBehaviour{
     	die_dir = tr.TransformDirection(desiredLocalDirection * maxSpeed);
     	return die_dir;
     }
-    
+
     Vector3 AdjustGroundVelocityToNormal(Vector3 hVelocity,Vector3 groundNormal) {
     	Vector3 sideways = Vector3.Cross(Vector3.up, hVelocity);
     	return Vector3.Cross(sideways, groundNormal).normalized * hVelocity.magnitude;
     }
-    
+
     bool IsGroundedTest() {
     	return (groundNormal.y > 0.01f);
     }
-    
+
     public float GetMaxAcceleration(bool grounded) {
     	// Maximum acceleration on ground and in air
     	if (grounded)
@@ -2551,41 +2551,41 @@ public class AimScript:MonoBehaviour{
     	else
     		return movement.maxAirAcceleration;
     }
-    
+
     public float CalculateJumpVerticalSpeed(float targetJumpHeight) {
-    	// From the jump height and gravity we deduce the upwards speed 
+    	// From the jump height and gravity we deduce the upwards speed
     	// for the character to reach at the apex.
     	return Mathf.Sqrt (2 * targetJumpHeight * movement.gravity);
     }
-    
+
     public bool IsJumping() {
     	return jumping.jumping;
     }
-    
+
     public bool IsSliding() {
     	return (grounded && sliding.enabled && TooSteep());
     }
-    
+
     public bool IsTouchingCeiling() {
     	return (int)(movement.collisionFlags & CollisionFlags.CollidedAbove) != 0;
     }
-    
+
     public bool IsGrounded() {
     	return grounded;
     }
-    
+
     public bool TooSteep() {
     	return (groundNormal.y <= Mathf.Cos(controller.slopeLimit * Mathf.Deg2Rad));
     }
-    
+
     public Vector3 GetDirection() {
     	return inputMoveDirection;
     }
-    
+
     public void SetControllable(bool controllable) {
     	canControl = controllable;
     }
-    
+
     // Project a direction onto elliptical quater segments based on forward, sideways, and backwards speed.
     // The function returns the length of the resulting vector.
     public float MaxSpeedInDirection(Vector3 desiredMovementDirection) {
@@ -2598,15 +2598,14 @@ public class AimScript:MonoBehaviour{
     		return length * (crouching ? 0.5f : 1.0f) * (1.0f + running);
     	}
     }
-    
+
     public void SetVelocity(Vector3 velocity) {
     	grounded = false;
     	movement.velocity = velocity;
     	movement.frameVelocity = Vector3.zero;
     	SendMessage("OnExternalVelocity");
     }
-    
+
     // Require a character controller to be attached to the same game object
 
 }
-
