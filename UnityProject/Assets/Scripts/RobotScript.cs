@@ -314,7 +314,7 @@ public class RobotScript:MonoBehaviour{
     		switch(ai_state){
     			case AIState.IDLE:
                     if (!LimitedRotation) {
-                        rotation_y.target_state += Time.deltaTime * 100.0f;
+                        rotation_y.target_state += Time.deltaTime * 60.0f;  317: Time.deltaTime * 100,0f // rotation speed of the gun pivot while idle - Yoshito
                     }
                     else {
                         if (!Waiting) {
