@@ -10,4 +10,4 @@ Join the community over on the official Wolfire Discord server: https://discord.
 
 
 ### Feature List
--
+- Shock (Flying) Drone speed at 60%
