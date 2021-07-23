@@ -13,3 +13,10 @@ Join the community over on the official Wolfire Discord server: https://discord.
 - Shock (Flying) Drone speed at 60%
 - Turret idle spin at 60%
 - Fall damage reduced (Survive single story drop unless jumping.)
+- All drone visibility decreased to 75%
+
+### Posible Features to add
+- Increase ammo drop size
+- Turrets drop ammo?
+- Always start with enough bullets to fill a magazine / chamber?
+- Increase hit-box sizes?

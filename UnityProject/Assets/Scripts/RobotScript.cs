@@ -78,7 +78,7 @@ public class RobotScript:MonoBehaviour{
     float kAlertCooldownDelay = 2.0f;
     float alert_delay = 0.0f;
     float alert_cooldown_delay = 0.0f;
-    float kMaxRange = 20.0f;
+    float kMaxRange = 15.0f; /// Number given to GetTarget that determines drone 'sight' range -Yoshito
     float rotor_speed = 0.0f;
     float top_rotor_rotation = 0.0f;
     float bottom_rotor_rotation = 0.0f;
