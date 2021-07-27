@@ -16,10 +16,12 @@ Join the community over on the official Wolfire Discord server: https://discord.
 - All drone visibility range decreased to 75%
 - Increased ammount of bullets found in a pile
 
+### Feature inprogress
+- Always start with enough bullets to fill a magazine / chamber? (or, always start with full magazine / chamber?)
+
 ### Posible Features to add
 
 - Turrets drop ammo?
-- Always start with enough bullets to fill a magazine / chamber? (or, always start with full magazine / chamber?)
 - Increase hit-box sizes for drones?
-- Increase jump height?
+- Increase jump height? (having a hard time with this)
 - Add run key?

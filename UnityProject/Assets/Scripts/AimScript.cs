@@ -74,10 +74,10 @@ public class CharacterMotorJumping {
 	public bool enabled = true;
 
 	// How high do we jump when pressing jump and letting go immediately
-	public float baseHeight = 1.0f;
+	public float baseHeight = 1.0f; /// Jump height on tap? - Yoshito
 
 	// We add extraHeight units (meters) on top when holding the button down longer while jumping
-	public float extraHeight = 4.1f;
+	public float extraHeight = 4.1f; /// Jump height on hold? - Yoshito
 
 	// How much does the character jump out perpendicular to the surface on walkable surfaces?
 	// 0 means a fully vertical jump and 1 means fully perpendicular.
@@ -484,8 +484,9 @@ public class AimScript:MonoBehaviour{
     		RInput.player.Inventory.Inventory10,
     	};
 
-    	int num_start_bullets = UnityEngine.Random.Range(0,10); ///- Yoshito
-    	if(magazine_obj != null) {
+			int max_rounds = 6; /// Hard coded for now but I's like this int to equal the mag / chamber capacity - Yoshito
+			int num_start_bullets = UnityEngine.Random.Range(max_rounds,max_rounds * 2); // Range that determins the number of bullets - Yoshito
+			if(magazine_obj != null) {
     		int num_start_mags = UnityEngine.Random.Range(0,3);
     		for(int i=1; i<num_start_mags+1; ++i){
     			weapon_slots[i].type = WeaponSlotType.MAGAZINE;
