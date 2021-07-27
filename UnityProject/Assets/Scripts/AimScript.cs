@@ -216,7 +216,7 @@ public class AimScript:MonoBehaviour{
     float rotation_x_leeway = 0.0f;
     float rotation_y_min_leeway = 0.0f;
     float rotation_y_max_leeway = 0.0f;
-    float kRotationXLeeway = 5.0f;
+    float kRotationXLeeway = 5.0f; /// - Yoshito
     float kRotationYMinLeeway = 20.0f;
     float kRotationYMaxLeeway = 10.0f;
 
@@ -484,7 +484,7 @@ public class AimScript:MonoBehaviour{
     		RInput.player.Inventory.Inventory10,
     	};
 
-    	int num_start_bullets = UnityEngine.Random.Range(0,10);
+    	int num_start_bullets = UnityEngine.Random.Range(0,10); ///- Yoshito
     	if(magazine_obj != null) {
     		int num_start_mags = UnityEngine.Random.Range(0,3);
     		for(int i=1; i<num_start_mags+1; ++i){
@@ -1816,7 +1816,7 @@ public class AimScript:MonoBehaviour{
     				if(gun_script.HasGunComponent(GunAspect.ALTERNATIVE_STANCE)){
     					DrawHelpLine($"Switch holdingstyle: tap [ {GetBoundKey(RInput.gun.Gun.ToggleStance)} ]", gun_script.ShouldToggleStance());
     				}
-    				if(gun_script.HasGunComponent(GunAspect.REVOLVER_CYLINDER)){
+    				if(gun_script.HasGunComponent(GunAspect.REVOLVER_CYLINDER)){ /// - Yoshito
     					if(!gun_script.IsCylinderOpen()){
     						DrawHelpLine($"Open cylinder: tap [ {GetBoundKey(RInput.gun.Gun.SwingOutCylinder)} ]", (gun_script.ShouldOpenCylinder() && loose_bullets.Count!=0));
     					} else {
