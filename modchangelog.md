@@ -8,6 +8,19 @@ RobotScript.cs | 317 | `Time.deltaTime * 100.0f` | `Time.deltaTime * 60.0f` | Tu
 AimScript.cs | 2220 | `if(old_vel.y < -8.0f){` | `if(old_vel.y < -10.0f){` | Player wont die falling from single story unless jumping.
 RobotScript.cs | 81 | `float kMaxRange = 20.0f;` | `float kMaxRange = 15.0f;` | All drone target range decreased to 75%
 BulletPileScript.cs | 20 | `int num_bullets = UnityEngine.Random.Range(1,6);` | `int num_bullets = UnityEngine.Random.Range(2,8);` | Bullets in pile now between 2 and 8
-*AimScript.cs | 487 - 488 | `int num_start_bullets = UnityEngine.Random.Range(0,10);` | Number of bullets player starts with range from 6 to double that
+*AimScript.cs | 487 - 488 | `int num_start_bullets = UnityEngine.Random.Range(0,10);` |`GunScript gun_script = GetGunScript();
 
-* In progress
+			int max_rounds = 7;
+			int extra_rounds = UnityEngine.Random.Range(1, 8);
+
+			if (gun_script.HasGunComponent(GunAspect.REVOLVER_CYLINDER)) {
+				max_rounds = 6;
+				extra_rounds = UnityEngine.Random.Range(3, 8);
+			} else if (gun_script.HasGunComponent(GunAspect.FIRE_MODE)) {
+				max_rounds = 17;
+				extra_rounds = 0;
+			}
+
+			int num_start_bullets = max_rounds + extra_rounds; `| Player will start with enough bullets to fill chamber / magagine and possibly get extra unless starting weapon is the glock
+
+\* Subject to change

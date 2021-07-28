@@ -484,8 +484,20 @@ public class AimScript:MonoBehaviour{
     		RInput.player.Inventory.Inventory10,
     	};
 
-			int max_rounds = 6; /// Hard coded for now but I's like this int to equal the mag / chamber capacity - Yoshito
-			int num_start_bullets = UnityEngine.Random.Range(max_rounds,max_rounds * 2); // Range that determins the number of bullets - Yoshito
+			GunScript gun_script = GetGunScript(); // Need this to access GunAspect Components - Yoshito
+
+			int max_rounds = 7; // Setting the default max rounds - Yoshito
+			int extra_rounds = UnityEngine.Random.Range(1, 8); // Extra rounds - Yoshito
+
+			if (gun_script.HasGunComponent(GunAspect.REVOLVER_CYLINDER)) { // If gun script has REVOLVER_CYLINDER (it's the default Revolver) - Yoshito
+				max_rounds = 6; // Set max rounds to 6 - Yoshito
+				extra_rounds = UnityEngine.Random.Range(3, 8);  // A little extra for revolver
+			} else if (gun_script.HasGunComponent(GunAspect.FIRE_MODE)) { // If gun script has FIRE_MODE(it's the default Glock), set max rounds to 17 - Yoshito
+				max_rounds = 17; // Set max rounds to 17 - Yoshito
+				extra_rounds = 0; // No extra bullets for glock :( - Yoshito
+			}
+
+			int num_start_bullets = max_rounds + extra_rounds; /// Range that determines the number of bullets - Yoshito
 			if(magazine_obj != null) {
     		int num_start_mags = UnityEngine.Random.Range(0,3);
     		for(int i=1; i<num_start_mags+1; ++i){

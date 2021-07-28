@@ -15,9 +15,9 @@ Join the community over on the official Wolfire Discord server: https://discord.
 - Fall damage reduced (Survive single story drop unless jumping.)
 - All drone visibility range decreased to 75%
 - Increased ammount of bullets found in a pile
+- Always start with enough bullets to fill a magazine / chamber and possible extras
 
 ### Feature inprogress
-- Always start with enough bullets to fill a magazine / chamber? (or, always start with full magazine / chamber?)
 
 ### Posible Features to add
 
@@ -25,3 +25,4 @@ Join the community over on the official Wolfire Discord server: https://discord.
 - Increase hit-box sizes for drones?
 - Increase jump height? (having a hard time with this)
 - Add run key?
+- Increase Turret light strength?
