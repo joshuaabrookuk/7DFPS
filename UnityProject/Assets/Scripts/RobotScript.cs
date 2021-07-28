@@ -73,12 +73,12 @@ public class RobotScript:MonoBehaviour{
     bool barrel_alive = true;
     bool ammo_alive = true;
     bool trigger_down = false;
-    int bullets = 15;
-    float kAlertDelay = 0.6f;
-    float kAlertCooldownDelay = 2.0f;
+    int bullets = 15; // Ammount of bullets a turret has - Yoshito
+    float kAlertDelay = 1.2f; // The ammount of time a turret will stay alert before shooting - Yoshito
+    float kAlertCooldownDelay = 2.0f; // The ammount of time a turret will stay alert before resuming idle - Yoshito
     float alert_delay = 0.0f;
     float alert_cooldown_delay = 0.0f;
-    float kMaxRange = 15.0f; /// Number given to GetTarget that determines drone 'sight' range -Yoshito
+    float kMaxRange = 15.0f; // Number given to GetTarget that determines drone 'sight' range -Yoshito
     float rotor_speed = 0.0f;
     float top_rotor_rotation = 0.0f;
     float bottom_rotor_rotation = 0.0f;

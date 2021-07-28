@@ -15,14 +15,13 @@ Join the community over on the official Wolfire Discord server: https://discord.
 - Fall damage reduced (Survive single story drop unless jumping.)
 - All drone visibility range decreased to 75%
 - Increased ammount of bullets found in a pile
-- Always start with enough bullets to fill a magazine / chamber and possible extras
-
-### Feature inprogress
+- Always start with enough bullets to fill a magazine / chamber and possible extras (This feature relies on identifying base game weapons by thier components and would need changing for further mod support)
+- Increase Turret alert time before they start to shoot.
 
 ### Posible Features to add
-
 - Turrets drop ammo?
 - Increase hit-box sizes for drones?
 - Increase jump height? (having a hard time with this)
 - Add run key?
 - Increase Turret light strength?
+- Remove slots 7 to 10(0) (Though it's not inherently tied to difficulty items can get lost there which may be confusing to new players? Then again I often keep my flashlight there as it can be distracting especially in slot 4 )
