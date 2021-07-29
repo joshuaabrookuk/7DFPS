@@ -17,7 +17,7 @@ public class BulletPileScript : MonoBehaviour{
             tile_parent = transform.parent;
         }
 
-    	int num_bullets = UnityEngine.Random.Range(2,8); /// The number of bullets found in pile - Yoshito
+    	int num_bullets = UnityEngine.Random.Range(2,6); /// The number of bullets found in pile - Yoshito
     	for(int i=0; i<num_bullets; ++i){
     		GameObject bullet = (GameObject)Instantiate(weapon_holder.bullet_object);
             bullet.transform.parent = tile_parent;
