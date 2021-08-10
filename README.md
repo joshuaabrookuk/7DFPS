@@ -12,11 +12,12 @@ Join the community over on the official Wolfire Discord server: https://discord.
 ### Feature List
 - Shock (Flying) Drone speed at 60%
 - Turret idle spin at 60%
-- Fall damage reduced (Survive single story drop unless jumping.)
+- Fall damage reduced (Survive single story drop unless jumping, this is based on velocity so you can still die if running)
 - All drone visibility range decreased to 75%
 - Increased ammount of bullets found in a pile
 - Always start with enough bullets to fill a magazine / chamber and possible extras (This feature relies on identifying base game weapons by thier components and would need changing for further mod support)
 - Increase Turret alert time before they start to shoot.
+- Gun Lock toggle is on by default in menu
 
 ### Posible Features to add
 - Turrets drop ammo?
@@ -24,4 +25,5 @@ Join the community over on the official Wolfire Discord server: https://discord.
 - Increase jump height? (having a hard time with this)
 - Add run key?
 - Increase Turret light strength?
+- Increase hit back strength of bullets to flying drones?
 - Remove slots 7 to 10(0) (Though it's not inherently tied to difficulty items can get lost there which may be confusing to new players? Then again I often keep my flashlight there as it can be distracting especially in slot 4 )

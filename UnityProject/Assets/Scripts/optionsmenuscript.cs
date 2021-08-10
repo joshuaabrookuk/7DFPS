@@ -36,7 +36,7 @@ public class optionsmenuscript : MonoBehaviour {
         return false;
     }
 
-    public void OnApplicationPause() {  
+    public void OnApplicationPause() {
         UnlockCursor();
     }
 
@@ -59,6 +59,7 @@ public class optionsmenuscript : MonoBehaviour {
 
     public void Start() {
         LockCursor();
+        GunLock();
 
         if(PlayerPrefs.GetInt("set_defaults", 1) == 1) {
             RestoreDefaults();
@@ -67,6 +68,10 @@ public class optionsmenuscript : MonoBehaviour {
         Preferences.UpdatePreferences();
         UpdateUIValuesAndApplyDefaults();
         ImGuiUnity.instance.enableInput = false;
+    }
+
+    public void GunLock() { // Made a new void to set lock_gun_to_center to 1 at start - Yoshito
+      PlayerPrefs.SetInt("lock_gun_to_center", 1);
     }
 
     public void Update() {
@@ -109,7 +114,7 @@ public class optionsmenuscript : MonoBehaviour {
         UnlockCursor();
         Time.timeScale = 0.0f;
     }
-    
+
     public void HideMenu() {
         show_menu = false;
         show_mod_ui = false;
@@ -124,7 +129,7 @@ public class optionsmenuscript : MonoBehaviour {
     public static bool IsMenuShown() {
         return show_menu;
     }
-    
+
     public void UpdateInt(Toggle toggle) {
         PlayerPrefs.SetInt(toggle.name, toggle.isOn ? 1 : 0);
     }
@@ -184,7 +189,7 @@ public class optionsmenuscript : MonoBehaviour {
         PlayerPrefs.SetFloat("voice_volume", 1.0f);
         PlayerPrefs.SetFloat("mouse_sensitivity", 0.2f);
         PlayerPrefs.SetFloat("gun_distance", 1f);
-        PlayerPrefs.SetInt("lock_gun_to_center", 0);
+        // PlayerPrefs.SetInt("lock_gun_to_center", 0); - Setting the default didn't change the menu option on start - Yoshito
         PlayerPrefs.SetInt("mouse_invert", 0);
         PlayerPrefs.SetInt("toggle_crouch", 1);
 
@@ -211,7 +216,7 @@ public class optionsmenuscript : MonoBehaviour {
     public void SetPostProcessingEnabled(Toggle toggle) {
         postProcessLayer.enabled = toggle.isOn;
     }
-    
+
     public void SetPostProcessingWeight(float weight) {
         postProcessVolume.weight = weight;
     }
@@ -223,7 +228,7 @@ public class optionsmenuscript : MonoBehaviour {
     public void SetBloomIntensity(float intensity) {
         bloom.intensity.Override(intensity);
     }
- 
+
     public void SetAAMode(int mode) {
         postProcessLayer.antialiasingMode = (PostProcessLayer.Antialiasing) mode;
     }
