@@ -354,7 +354,7 @@ public class RobotScript:MonoBehaviour{
     				float y_height = Vector3.Dot(y_axis, rel_pos.normalized);
     				float target_x = -Mathf.Asin(y_height)/Mathf.PI*180;
     				rotation_x.target_state = target_x;
-    				rotation_x.target_state = Mathf.Min(40.0f,Mathf.Max(-40.0f,target_x));
+    				rotation_x.target_state = Mathf.Min(27.0f,Mathf.Max(-27.0f,target_x)); // The floats here detemin the roatational limit of the turrets gun pivot- Yoshito
     				break;
     		}
     	}
@@ -409,7 +409,7 @@ public class RobotScript:MonoBehaviour{
 
     			rel_pos = target.position - gun_camera.position;
     			bool sees_target = false;
-    			if(dist < kMaxRange && Vector3.Dot(gun_camera.rotation*new Vector3(0.0f,-1.0f,0.0f), rel_pos.normalized) > 0.7f){
+    			if(dist < kMaxRange && Vector3.Dot(gun_camera.rotation*new Vector3(0.0f,-1.0f,0.0f), rel_pos.normalized) > 0.8f){ // 'If in range and float, calculated from two vectors is greater than hard coded number...' I havn't quite worked how how it works but increasing the hard coded number limits the turrets decection angle in the y and possibly x axis - Yoshito
     				RaycastHit hit = new RaycastHit();
     				if(!Physics.Linecast(gun_camera.position, target.position, out hit, 1<<0)){
     					sees_target = true;
