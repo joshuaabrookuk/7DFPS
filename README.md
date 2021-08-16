@@ -10,7 +10,7 @@ Join the community over on the official Wolfire Discord server: https://discord.
 
 
 ### Feature List
-- Shock (Flying) Drone speed at 60%
+- Shock (Flying) Drone speed at 50%
 - Turret idle spin at 60%
 - Fall damage reduced (Survive single story drop unless jumping, this is based on velocity so you can still die if running)
 - All drone visibility range decreased to 75%
@@ -18,7 +18,7 @@ Join the community over on the official Wolfire Discord server: https://discord.
 - *Always start with enough bullets to fill a magazine / chamber and possible extras (This feature relies on identifying base game weapons by thier components and would need changing for further mod support)
 - Increase Turret alert time before they start to shoot.
 - Gun Lock toggle is on by default in menu
-- *Limited decection and range angle of turret to about 67% and 
+- *Limited decection and range angle of turret to about 67%
 
 \* Subject to change
 

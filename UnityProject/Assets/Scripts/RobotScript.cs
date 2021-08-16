@@ -540,7 +540,7 @@ public class RobotScript:MonoBehaviour{
     	Vector3 rel_pos = target_pos - transform.position;
     	if(motor_alive){
     		float kFlyDeadZone = 0.2f;
-    		float kFlySpeed = 6.0f; // speed of the drone while flying - Yoshito
+    		float kFlySpeed = 5.0f; // speed of the drone while flying - Yoshito
     		Vector3 target_vel = (target_pos - transform.position) / kFlyDeadZone;
     		if(target_vel.magnitude > 1.0f){
     			target_vel = target_vel.normalized;
