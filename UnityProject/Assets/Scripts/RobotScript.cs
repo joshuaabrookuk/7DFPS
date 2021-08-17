@@ -700,7 +700,8 @@ public class RobotScript:MonoBehaviour{
     			// Target finding
     			rel_pos = target.position - drone_camera.position;
     			bool sees_target = false;
-    			if(dist < kMaxRange && Vector3.Dot(drone_camera.rotation*new Vector3(0.0f,-1.0f,0.0f), rel_pos.normalized) > 0.7f){
+    			if(dist < 12.5f && Vector3.Dot(drone_camera.rotation*new Vector3(0.0f,-1.0f,0.0f), rel_pos.normalized) > 0.49f){ // Similar to line 412, 'If disance is less than hard coded valuse and float, calculated from two vectors is greater than hard coded number...' then detect player.
+
     				hit = new RaycastHit();
     				if(!Physics.Linecast(drone_camera.position, target.position, out hit, 1<<0)){
     					sees_target = true;

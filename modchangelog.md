@@ -13,5 +13,6 @@ RobotScript.cs | 77 | `float kAlertDelay = 0.6f;` | `float kAlertDelay = 0.6f;` 
 optionsmenuscript.cs | 62 / 73-76 | *new lines added* | `GunLock();` <br><br>`public void GunLock() {`<br>`PlayerPrefs.SetInt("lock_gun_to_center", 1);`<br>`}`  | Gun Lock toggle is on by default in menu
 \*RobotScript.cs | 412 | `if(dist < kMaxRange && Vector3.Dot(gun_camera.rotation*new Vector3(0.0f,-1.0f,0.0f), rel_pos.normalized) > 0.7f){` | `if(dist < kMaxRange && Vector3.Dot(gun_camera.rotation*new Vector3(0.0f,-1.0f,0.0f), rel_pos.normalized) > 0.8f){` | Limits the turrets angle of detection on the y and x axis to about 67%
 *RobotScript.cs | 357 | `rotation_x.target_state = Mathf.Min(40.0f,Mathf.Max(-40.0f,target_x));` | `rotation_x.target_state = Mathf.Min(27.0f,Mathf.Max(-27.0f,target_x));` | Limits the turrets angle of rotation on the x axis to about 67%
+RobotScript.cs | 703 | `if(dist < kMaxRange && Vector3.Dot(drone_camera.rotation*new Vector3(0.0f,-1.0f,0.0f), rel_pos.normalized) > 0.7f){` | `if(dist < 12.5f && Vector3.Dot(drone_camera.rotation*new Vector3(0.0f,-1.0f,0.0f), rel_pos.normalized) > 0.49f){` | Limits the fly drones range and angle of decection. Range at 62.5% and detection angle at 70%
 
 \* Subject to change
